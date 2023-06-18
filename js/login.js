@@ -361,8 +361,7 @@ function showSelectedHallName(){
   });
 }
 
-var item_image_download_url;
-var image_storageRef;
+
 
 async function uploadImage(collectionRef, documentId, newItemData) {
   const imageInput = document.getElementById("imageInput");
@@ -860,6 +859,10 @@ function logOut(){
 // ==============  Admin Order Page ============================
 
 var lunch_pending, lunch_served, dinner_pending, dinner_served;
+var item_image_download_url;
+var image_storageRef;
+
+
 async function admin_showDate(){
 
   userEmail = localStorage.getItem("userEmail");
@@ -903,7 +906,7 @@ var year = date.getFullYear();
 
 
 
-function admin_showMenuItems(item_name, show_item_price_in_menu, image_source){
+function admin_showMenuItems(item_name, show_item_price_in_menu, image_source,hall_name){
 
 // Create a new element
 var newElement = document.createElement('div');
@@ -945,7 +948,7 @@ parentElement.appendChild(newElement);
 
 
 function admin_menu(){
-
+  var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
   colRef = collection(db, reference);
  
  // get collection data
@@ -966,7 +969,7 @@ function admin_menu(){
            show_item_price_in_menu = item_price +'/='
          }
          if(item_availability){
-           admin_showMenuItems(item_name, show_item_price_in_menu,item_image_source)
+           admin_showMenuItems(item_name, show_item_price_in_menu,item_image_source,admin_hall_name)
          }
      })
      
@@ -980,6 +983,7 @@ function admin_menu(){
  }
 
  function admin_lunchButtonClicked(){
+ 
   document.getElementById('lunch-button').addEventListener("click", async function() {
     let lunch_button = document.getElementById('lunch-button');
     lunch_button.style.color = 'white';
@@ -1004,7 +1008,7 @@ function admin_menu(){
     document.getElementById('menu-items-card-holder').innerHTML='';
 
     meal_name = 'Lunch';
-    reference = hall_name+'/Menu/'+meal_name;
+    reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
     menu();
   
   });
@@ -1038,7 +1042,7 @@ function admin_dinnerButtonClicked(){
     document.getElementById('menu-items-card-holder').innerHTML='';
 
     meal_name = 'Dinner';
-    reference = hall_name+'/Menu/'+meal_name;
+    reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
     menu();
   
   });
@@ -1047,7 +1051,7 @@ function admin_dinnerButtonClicked(){
 
 function admin_order(){
   admin_showDate();
-  admin_menu();
+  // admin_menu();
   admin_lunchButtonClicked();
   admin_dinnerButtonClicked();
 }
