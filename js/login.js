@@ -364,7 +364,7 @@ function showSelectedHallName(){
 var item_image_download_url;
 var image_storageRef;
 
-async function uploadImage() {
+async function uploadImage(collectionRef, documentId, newItemData) {
   const imageInput = document.getElementById("imageInput");
   const file = imageInput.files[0];
 
@@ -378,14 +378,18 @@ async function uploadImage() {
         console.log("Image uploaded successfully!");
 
     
-        // getDownloadURL(image_storageRef)
-        //   .then((downloadURL) => {
-        //     item_image_download_url = downloadURL;
+        getDownloadURL(image_storageRef)
+          .then((downloadURL) => {
+            item_image_download_url = downloadURL;
+            newItemData.url = downloadURL;
+      // Set the new document data for the selected document ID
+       setDoc(doc(collectionRef, documentId), newItemData);
+      document.getElementById("popup-container").style.display = "none";
             
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error getting download URL: ", error);
-        //   });
+          })
+          .catch((error) => {
+            console.error("Error getting download URL: ", error);
+          });
       })
       .catch((error) => {
         console.error("Error uploading image: ", error);
@@ -431,16 +435,13 @@ function submitAddItemButtonClicked() {
 
     try {
       // Upload the image to Firebase Storage
-  await uploadImage();
+  await uploadImage(collectionRef, documentId, newItemData);
 
   // Get the download URL for the image
-  const downloadURL = await getDownloadURL(image_storageRef);
+  // const downloadURL = await getDownloadURL(image_storageRef);
 
   // Update the newItemData with the download URL
-  newItemData.url = downloadURL;
-      // Set the new document data for the selected document ID
-      await setDoc(doc(collectionRef, documentId), newItemData);
-      document.getElementById("popup-container").style.display = "none";
+  
     } catch (error) {
       console.error("Error adding document: ", error);
     }
