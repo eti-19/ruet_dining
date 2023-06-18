@@ -259,7 +259,7 @@ function menu(){
 // get collection data
 getDocs(colRef)
   .then(snapshot => {
-    // console.log(snapshot.docs)
+
     let items = []
     
     snapshot.docs.forEach(doc => {
@@ -858,9 +858,9 @@ function logOut(){
 
 // ==============  Admin Order Page ============================
 
-
+var lunch_pending, lunch_served, dinner_pending, dinner_served;
 async function admin_showDate(){
-  var lunch_pending, lunch_served, dinner_pending, dinner_served;
+
   userEmail = localStorage.getItem("userEmail");
   var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
   document.getElementById('show-selected-hall-name').innerHTML  = admin_hall_name;
@@ -884,14 +884,6 @@ var year = date.getFullYear();
 
    sessionStorage.setItem('formattedDate', formattedDate);
 
-  var colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Lunch/Pending');
-  await getDocs(colRef).then(snapshot=>{
-  lunch_pending = snapshot.size;});
-
-  colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Lunch/Served');
-  await getDocs(colRef).then(snapshot=>{
-  lunch_served = snapshot.size;});
-
   colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
   await getDocs(colRef).then(snapshot=>{
   dinner_pending = snapshot.size;});
@@ -901,7 +893,7 @@ var year = date.getFullYear();
   dinner_served = snapshot.size;});
 
 
-  console.log('Lunch Pending: '+lunch_pending+'\nLunch Served: '+ lunch_served+'\nDinner Pending: '+dinner_pending+'\nDinner Served: '+dinner_served);
+ 
   
  
    // Update the innerHTML of the display element
@@ -958,7 +950,7 @@ function admin_menu(){
  // get collection data
  getDocs(colRef)
    .then(snapshot => {
-     // console.log(snapshot.docs)
+
      let items = []
      
      snapshot.docs.forEach(doc => {
@@ -986,12 +978,77 @@ function admin_menu(){
  
  }
 
+ function admin_lunchButtonClicked(){
+  document.getElementById('lunch-button').addEventListener("click", async function() {
+    let lunch_button = document.getElementById('lunch-button');
+    lunch_button.style.color = 'white';
+    lunch_button.style.backgroundColor = 'rgba(63, 99, 183, 0.689)';
+    let dinner_button = document.getElementById('dinner-button');
+    dinner_button.style.color = 'black';
+    dinner_button.style.backgroundColor = 'white';
 
+    var formattedDate = sessionStorage.getItem('formattedDate');
+    var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+    var colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Lunch/Pending');
+    await getDocs(colRef).then(snapshot=>{
+    lunch_pending = snapshot.size;});
+
+    colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Lunch/Served');
+    await getDocs(colRef).then(snapshot=>{
+    lunch_served = snapshot.size;});
+    var show_in_lunch_pending = 'Pending : '+lunch_pending
+    var show_in_lunch_served = 'Served : '+lunch_served
+    document.getElementById('show_remaining_served_orders').textContent=`${show_in_lunch_pending} ${"\u00A0".repeat(8)} ${show_in_lunch_served}`;
+    
+    document.getElementById('menu-items-card-holder').innerHTML='';
+
+    meal_name = 'Lunch';
+    reference = hall_name+'/Menu/'+meal_name;
+    menu();
+  
+  });
+}
+
+
+function admin_dinnerButtonClicked(){
+  document.getElementById('dinner-button').addEventListener("click", async function() {
+    let dinner_button = document.getElementById('dinner-button');
+    dinner_button.style.color = 'white';
+    dinner_button.style.backgroundColor = 'rgba(63, 99, 183, 0.689)';
+    let lunch_button = document.getElementById('lunch-button');
+    lunch_button.style.color = 'black';
+    lunch_button.style.backgroundColor = 'white';
+
+
+    var formattedDate = sessionStorage.getItem('formattedDate');
+    var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+    var colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
+    await getDocs(colRef).then(snapshot=>{
+    dinner_pending = snapshot.size;});
+
+    colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
+    await getDocs(colRef).then(snapshot=>{
+    dinner_served = snapshot.size;});
+    var show_in_dinner_pending = 'Pending : '+dinner_pending
+    var show_in_dinner_served = 'Served : '+dinner_served
+    document.getElementById('show_remaining_served_orders').textContent=`${show_in_dinner_pending} ${"\u00A0".repeat(8)} ${show_in_dinner_served}`;
+
+
+    document.getElementById('menu-items-card-holder').innerHTML='';
+
+    meal_name = 'Dinner';
+    reference = hall_name+'/Menu/'+meal_name;
+    menu();
+  
+  });
+}
 
 
 function admin_order(){
   admin_showDate();
   admin_menu();
+  admin_lunchButtonClicked();
+  admin_dinnerButtonClicked();
 }
 
 
