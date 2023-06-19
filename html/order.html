@@ -288,8 +288,8 @@
       }else{
         if(hall_name != sessionStorage.getItem('dinner_hall_name')){
           sessionStorage.setItem('dinner_hall_name', hall_name);
-          selectedItemForLunch= ['Rice','Daul'];
-          selectedItemForLunchPrice = [25,0];
+          selectedItemForDinner= ['Rice','Daul'];
+          selectedItemForDinnerPrice = [25,0];
         }
         if(item_name.target.id != 'Rice' && item_name.target.id != 'Daul'){
           selectedItemForDinner.push(item_name.target.id);

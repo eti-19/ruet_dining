@@ -167,6 +167,7 @@ var item_name, item_price, item_availability, item_image_source;
 
 function showDate(){
    userEmail = localStorage.getItem("userEmail");
+   
 
   var nextDay = new Date();
   nextDay.setDate(nextDay.getDate() + 1); // Add 1 day to the current date
@@ -363,89 +364,89 @@ function showSelectedHallName(){
 
 
 
-async function uploadImage(collectionRef, documentId, newItemData) {
-  const imageInput = document.getElementById("imageInput");
-  const file = imageInput.files[0];
+// async function uploadImage(collectionRef, documentId, newItemData) {
+//   const imageInput = document.getElementById("imageInput");
+//   const file = imageInput.files[0];
 
-  if (file) {
-    // Create a storage reference
-     image_storageRef = ref(storage, hall_name+"/" + file.name);
+//   if (file) {
+//     // Create a storage reference
+//      image_storageRef = ref(storage, hall_name+"/" + file.name);
 
-    // Upload the file
-    uploadBytes(image_storageRef, file)
-      .then(() => {
-        console.log("Image uploaded successfully!");
+//     // Upload the file
+//     uploadBytes(image_storageRef, file)
+//       .then(() => {
+//         console.log("Image uploaded successfully!");
 
     
-        getDownloadURL(image_storageRef)
-          .then((downloadURL) => {
-            item_image_download_url = downloadURL;
-            newItemData.url = downloadURL;
-      // Set the new document data for the selected document ID
-       setDoc(doc(collectionRef, documentId), newItemData);
-      document.getElementById("popup-container").style.display = "none";
+//         getDownloadURL(image_storageRef)
+//           .then((downloadURL) => {
+//             item_image_download_url = downloadURL;
+//             newItemData.url = downloadURL;
+//       // Set the new document data for the selected document ID
+//        setDoc(doc(collectionRef, documentId), newItemData);
+//       document.getElementById("popup-container").style.display = "none";
             
-          })
-          .catch((error) => {
-            console.error("Error getting download URL: ", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error uploading image: ", error);
-      });
-  } else {
-    console.log("No file selected.");
-  }
-}
+//           })
+//           .catch((error) => {
+//             console.error("Error getting download URL: ", error);
+//           });
+//       })
+//       .catch((error) => {
+//         console.error("Error uploading image: ", error);
+//       });
+//   } else {
+//     console.log("No file selected.");
+//   }
+// }
 
 
-function addItemButtonClicked(){
-  document.getElementById('add-element-container').addEventListener("click", function(event){
-    document.getElementById('popup-container').style.display = "block";
-    document.getElementById('add-item-lunch-button').innerHTML = meal_name;
-  });
+// function addItemButtonClicked(){
+//   document.getElementById('add-element-container').addEventListener("click", function(event){
+//     document.getElementById('popup-container').style.display = "block";
+//     document.getElementById('add-item-lunch-button').innerHTML = meal_name;
+//   });
 
   
-}
+// }
 
-function closeAddItemPopupClicked(){
-  document.getElementById('close-add-item-popup').addEventListener("click", function(event){
-    document.getElementById('popup-container').style.display = "none";
-  });
-}
+// function closeAddItemPopupClicked(){
+//   document.getElementById('close-add-item-popup').addEventListener("click", function(event){
+//     document.getElementById('popup-container').style.display = "none";
+//   });
+// }
 
 
-function submitAddItemButtonClicked() {
-  document.getElementById("submit-add-item-popup").addEventListener("click", async function (event) {
-    var newItemName = document.getElementById("itemNameToBeAdded").value;
-    var newItemValue = Number(document.getElementById("itemPriceToBeAdded").value);
+// function submitAddItemButtonClicked() {
+//   document.getElementById("submit-add-item-popup").addEventListener("click", async function (event) {
+//     var newItemName = document.getElementById("itemNameToBeAdded").value;
+//     var newItemValue = Number(document.getElementById("itemPriceToBeAdded").value);
 
-    reference = hall_name + "/Menu/" + meal_name;
+//     reference = hall_name + "/Menu/" + meal_name;
 
-    var collectionRef = collection(db, reference);
-    var documentId = newItemName; // specify the document ID
+//     var collectionRef = collection(db, reference);
+//     var documentId = newItemName; // specify the document ID
 
-    // Create a new document with the data you want to add
-    var newItemData = {
-      Available: true,
-      Price: newItemValue,
-      url: item_image_download_url,
-    };
+//     // Create a new document with the data you want to add
+//     var newItemData = {
+//       Available: true,
+//       Price: newItemValue,
+//       url: item_image_download_url,
+//     };
 
-    try {
-      // Upload the image to Firebase Storage
-  await uploadImage(collectionRef, documentId, newItemData);
+//     try {
+//       // Upload the image to Firebase Storage
+//   await uploadImage(collectionRef, documentId, newItemData);
 
-  // Get the download URL for the image
-  // const downloadURL = await getDownloadURL(image_storageRef);
+//   // Get the download URL for the image
+//   // const downloadURL = await getDownloadURL(image_storageRef);
 
-  // Update the newItemData with the download URL
+//   // Update the newItemData with the download URL
   
-    } catch (error) {
-      console.error("Error adding document: ", error);
-    }
-  });
-}
+//     } catch (error) {
+//       console.error("Error adding document: ", error);
+//     }
+//   });
+// }
 
 
 
@@ -465,11 +466,11 @@ function orderPage(){
 
   showSelectedHallName();
 
-addItemButtonClicked();
+// addItemButtonClicked();
 
-closeAddItemPopupClicked();
+// closeAddItemPopupClicked();
 
-submitAddItemButtonClicked();
+// submitAddItemButtonClicked();
 
 
 }
@@ -643,6 +644,7 @@ function dinner_removeItem(index) {
   sessionStorage.removeItem('selectedItemForLunchPrice');
   
   lunch_renderCartItems();
+  sessionStorage.removeItem('lunch_hall_name');
   location.reload();
 
   
@@ -672,6 +674,7 @@ function dinner_removeItem(index) {
     sessionStorage.removeItem('selectedItemForDinnerPrice');
 
     dinner_renderCartItems();
+    sessionStorage.removeItem('dinner_hall_name');
     location.reload();
 
 
@@ -863,10 +866,11 @@ var item_image_download_url;
 var image_storageRef;
 
 
-async function admin_showDate(){
+async function admin_showDate(admin_hall_name){
 
   userEmail = localStorage.getItem("userEmail");
-  var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+ 
+  // var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
   document.getElementById('show-selected-hall-name').innerHTML  = admin_hall_name;
   
 
@@ -888,13 +892,13 @@ var year = date.getFullYear();
 
    sessionStorage.setItem('formattedDate', formattedDate);
 
-  colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
-  await getDocs(colRef).then(snapshot=>{
-  dinner_pending = snapshot.size;});
+  // colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
+  // await getDocs(colRef).then(snapshot=>{
+  // dinner_pending = snapshot.size;});
 
-  colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
-  await getDocs(colRef).then(snapshot=>{
-  dinner_served = snapshot.size;});
+  // colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
+  // await getDocs(colRef).then(snapshot=>{
+  // dinner_served = snapshot.size;});
 
 
  
@@ -947,8 +951,8 @@ parentElement.appendChild(newElement);
 
 
 
-function admin_menu(){
-  var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+function admin_menu(admin_hall_name){
+  // var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
   colRef = collection(db, reference);
  
  // get collection data
@@ -982,7 +986,7 @@ function admin_menu(){
  
  }
 
- function admin_lunchButtonClicked(){
+ function admin_lunchButtonClicked(admin_hall_name){
  
   document.getElementById('lunch-button').addEventListener("click", async function() {
     let lunch_button = document.getElementById('lunch-button');
@@ -1009,13 +1013,14 @@ function admin_menu(){
 
     meal_name = 'Lunch';
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
-    menu();
+    admin_menu(admin_hall_name);
   
   });
 }
 
 
-function admin_dinnerButtonClicked(){
+function admin_dinnerButtonClicked(admin_hall_name){
+  
   document.getElementById('dinner-button').addEventListener("click", async function() {
     let dinner_button = document.getElementById('dinner-button');
     dinner_button.style.color = 'white';
@@ -1028,7 +1033,7 @@ function admin_dinnerButtonClicked(){
     var formattedDate = sessionStorage.getItem('formattedDate');
     var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
     var colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
-    await getDocs(colRef).then(snapshot=>{
+    await getDocs(colRef).then(snapshot=>{ console.log(admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served')
     dinner_pending = snapshot.size;});
 
     colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
@@ -1036,6 +1041,8 @@ function admin_dinnerButtonClicked(){
     dinner_served = snapshot.size;});
     var show_in_dinner_pending = 'Pending : '+dinner_pending
     var show_in_dinner_served = 'Served : '+dinner_served
+    console.log(show_in_dinner_pending+' '+ show_in_dinner_served)
+    console.log(colRef)
     document.getElementById('show_remaining_served_orders').textContent=`${show_in_dinner_pending} ${"\u00A0".repeat(8)} ${show_in_dinner_served}`;
 
 
@@ -1043,17 +1050,105 @@ function admin_dinnerButtonClicked(){
 
     meal_name = 'Dinner';
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
-    menu();
+    admin_menu();
   
   });
 }
 
+async function uploadImage(collectionRef, documentId, newItemData, admin_hall_name) {
+  const imageInput = document.getElementById("imageInput");
+  const file = imageInput.files[0];
+
+  if (file) {
+    // Create a storage reference
+     image_storageRef = ref(storage, admin_hall_name+"/" + file.name);
+
+    // Upload the file
+    uploadBytes(image_storageRef, file)
+      .then(() => {
+        console.log("Image uploaded successfully!");
+
+    
+        getDownloadURL(image_storageRef)
+          .then((downloadURL) => {
+            item_image_download_url = downloadURL;
+            newItemData.url = downloadURL;
+      // Set the new document data for the selected document ID
+       setDoc(doc(collectionRef, documentId), newItemData);
+      document.getElementById("popup-container").style.display = "none";
+            
+          })
+          .catch((error) => {
+            console.error("Error getting download URL: ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error uploading image: ", error);
+      });
+  } else {
+    console.log("No file selected.");
+  }
+}
+
+
+function admin_addItemButtonClicked(){
+  document.getElementById('add-element-container').addEventListener("click", function(event){
+    document.getElementById('popup-container').style.display = "block";
+    document.getElementById('add-item-lunch-button').innerHTML = meal_name;
+  });
+
+  
+}
+
+function admin_closeAddItemPopupClicked(){
+  document.getElementById('close-add-item-popup').addEventListener("click", function(event){
+    document.getElementById('popup-container').style.display = "none";
+  });
+}
+
+
+function admin_submitAddItemButtonClicked(admin_hall_name) {
+  document.getElementById("submit-add-item-popup").addEventListener("click", async function (event) {
+    var newItemName = document.getElementById("itemNameToBeAdded").value;
+    var newItemValue = Number(document.getElementById("itemPriceToBeAdded").value);
+
+    reference = admin_hall_name + "/Menu/" + meal_name;
+
+    var collectionRef = collection(db, reference);
+    var documentId = newItemName; // specify the document ID
+
+    // Create a new document with the data you want to add
+    var newItemData = {
+      Available: true,
+      Price: newItemValue,
+      url: item_image_download_url,
+    };
+
+    try {
+      // Upload the image to Firebase Storage
+  await uploadImage(collectionRef, documentId, newItemData,admin_hall_name);
+
+  // Get the download URL for the image
+  // const downloadURL = await getDownloadURL(image_storageRef);
+
+  // Update the newItemData with the download URL
+  
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  });
+}
 
 function admin_order(){
-  admin_showDate();
-  // admin_menu();
-  admin_lunchButtonClicked();
-  admin_dinnerButtonClicked();
+  var userEmail = localStorage.getItem("userEmail");
+  var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+  console.log('from order : '+ localStorage.getItem("userEmail"))
+  admin_showDate(admin_hall_name);
+  admin_lunchButtonClicked(admin_hall_name);
+  admin_dinnerButtonClicked(admin_hall_name);
+  admin_addItemButtonClicked(admin_hall_name);
+  admin_closeAddItemPopupClicked(admin_hall_name);
+  admin_submitAddItemButtonClicked(admin_hall_name);
 }
 
 
