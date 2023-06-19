@@ -891,18 +891,6 @@ var year = date.getFullYear();
    var formattedDate = month + " " + day + ", " + year;
 
    sessionStorage.setItem('formattedDate', formattedDate);
-
-  // colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
-  // await getDocs(colRef).then(snapshot=>{
-  // dinner_pending = snapshot.size;});
-
-  // colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
-  // await getDocs(colRef).then(snapshot=>{
-  // dinner_served = snapshot.size;});
-
-
- 
-  
  
    // Update the innerHTML of the display element
    document.getElementById('show-date').innerHTML  = formattedDate;
@@ -910,44 +898,144 @@ var year = date.getFullYear();
 
 
 
-function admin_showMenuItems(item_name, show_item_price_in_menu, image_source,hall_name){
+// function admin_showMenuItems(item_name, show_item_price_in_menu, image_source,hall_name){
 
-// Create a new element
-var newElement = document.createElement('div');
+// // Create a new element
+// var newElement = document.createElement('div');
 
-// Set class name for the new element
-newElement.className = 'card my-3 shadow border-0 pt-2';
+// // Set class name for the new element
+// newElement.className = 'card my-3 shadow border-0 pt-2';
 
-// Set styles for the new element
-newElement.style.width = '18rem';
-
-
-newElement.innerHTML = `
-<img
-src="${image_source}"
-class="card-img-top standard-height"
-alt="..."
-/>
-<div class="card-body">
-<h5 class="card-title">
-  <div class="row">
-    <div class="col">${item_name}</div>
-    <div class="col text-end">${show_item_price_in_menu} </div>
-  </div>
-</h5>
-<a class="btn btn-secondary w-100" id="${item_name}" onclick="editThisItemClicked(event, '${meal_name}', '${item_price}', '${hall_name}')">Edit This Item</a>
-</div>`;
+// // Set styles for the new element
+// newElement.style.width = '18rem';
 
 
+// newElement.innerHTML = `
+// <img
+// src="${image_source}"
+// class="card-img-top standard-height"
+// alt="..."
+// />
+// <div class="card-body">
+// <h5 class="card-title">
+//   <div class="row">
+//     <div class="col">${item_name}</div>
+//     <div class="col text-end">${show_item_price_in_menu} </div>
+//   </div>
+// </h5>
+// <a class="btn btn-secondary w-100" id="${item_name}" >Edit This </a>
+// </div>`;
+
+// document.getElementById(item_name).addEventListener("click", () => editThisItemClicked(item_name,meal_name,hall_name));
 
 
-// Get the parent element by its ID name
-var parentElement = document.getElementById('menu-items-card-holder');
+// // Get the parent element by its ID name
+// var parentElement = document.getElementById('menu-items-card-holder');
 
-// Append the new element to the parent element
-parentElement.appendChild(newElement);
+// // Append the new element to the parent element
+// parentElement.appendChild(newElement);
 
+// }
+
+// function editThisItemClicked(item_name, meal_name,hall_name) {
+//   var collectionRef = collection(db, hall_name+'/Menu/'+meal_name);
+//   updateDoc(doc(collectionRef, item_name), { Available: false }); 
+// }
+
+
+function admin_showMenuItems(item_name, show_item_price_in_menu, image_source, hall_name) {
+  // Create a new element
+  var newElement = document.createElement('div');
+
+  // Set class name for the new element
+  newElement.className = 'card my-3 shadow border-0 pt-2';
+
+  // Set styles for the new element
+  newElement.style.width = '18rem';
+
+  newElement.innerHTML = `
+    <img
+      src="${image_source}"
+      class="card-img-top standard-height"
+      alt="..."
+    />
+    <div class="card-body">
+      <h5 class="card-title">
+        <div class="row">
+          <div class="col">${item_name}</div>
+          <div class="col text-end">${show_item_price_in_menu}</div>
+        </div>
+      </h5>
+      <a class="btn btn-secondary w-100">Edit This</a>
+    </div>`;
+
+  newElement.id = item_name;
+
+  newElement.addEventListener("click", () => editThisItemClicked(item_name, meal_name, hall_name));
+
+  // Get the parent element by its ID name
+  var parentElement = document.getElementById('menu-items-card-holder');
+
+  // Append the new element to the parent element
+  parentElement.appendChild(newElement);
 }
+
+async function editThisItemClicked(item_name, meal_name, hall_name) {
+  var collectionRef = collection(db, hall_name + '/Menu/' + meal_name);
+  await updateDoc(doc(collectionRef, item_name), { Available: false });
+  location.reload();
+  
+  
+}
+
+
+
+function admin_showUnavailableMenuItems(item_name, show_item_price_in_menu, image_source,hall_name){
+
+  // Create a new element
+  var newElement = document.createElement('div');
+
+  // Set class name for the new element
+  newElement.className = 'card my-3 shadow border-0 pt-2';
+
+  // Set styles for the new element
+  newElement.style.width = '18rem';
+
+  newElement.innerHTML = `
+    <img
+      src="${image_source}"
+      class="card-img-top standard-height"
+      alt="..."
+    />
+    <div class="card-body">
+      <h5 class="card-title">
+        <div class="row">
+          <div class="col">${item_name}</div>
+          <div class="col text-end">${show_item_price_in_menu}</div>
+        </div>
+      </h5>
+      <a class="btn btn-secondary w-100">Make this item available</a>
+    </div>`;
+
+  newElement.id = item_name;
+
+  newElement.addEventListener("click", () => makeItemAvailableClicked(item_name, meal_name, hall_name));
+
+  // Get the parent element by its ID name
+  var parentElement = document.getElementById('unavailable-items-card-holder');
+
+  // Append the new element to the parent element
+  parentElement.appendChild(newElement);
+  
+  }
+
+  function makeItemAvailableClicked(item_name, meal_name, hall_name) {
+    var collectionRef = collection(db, hall_name + '/Menu/' + meal_name);
+    updateDoc(doc(collectionRef, item_name), { Available: true });
+    document.getElementById('lunch-button').click();
+  }
+
+
 
 
 
@@ -974,6 +1062,9 @@ function admin_menu(admin_hall_name){
          }
          if(item_availability){
            admin_showMenuItems(item_name, show_item_price_in_menu,item_image_source,admin_hall_name)
+         }
+         else{
+          admin_showUnavailableMenuItems(item_name, show_item_price_in_menu,item_image_source,admin_hall_name)
          }
      })
      
@@ -1010,6 +1101,7 @@ function admin_menu(admin_hall_name){
     document.getElementById('show_remaining_served_orders').textContent=`${show_in_lunch_pending} ${"\u00A0".repeat(8)} ${show_in_lunch_served}`;
     
     document.getElementById('menu-items-card-holder').innerHTML='';
+    document.getElementById('unavailable-items-card-holder').innerHTML='';
 
     meal_name = 'Lunch';
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
@@ -1033,7 +1125,7 @@ function admin_dinnerButtonClicked(admin_hall_name){
     var formattedDate = sessionStorage.getItem('formattedDate');
     var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
     var colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Pending');
-    await getDocs(colRef).then(snapshot=>{ console.log(admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served')
+    await getDocs(colRef).then(snapshot=>{ 
     dinner_pending = snapshot.size;});
 
     colRef = collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Served');
@@ -1041,16 +1133,16 @@ function admin_dinnerButtonClicked(admin_hall_name){
     dinner_served = snapshot.size;});
     var show_in_dinner_pending = 'Pending : '+dinner_pending
     var show_in_dinner_served = 'Served : '+dinner_served
-    console.log(show_in_dinner_pending+' '+ show_in_dinner_served)
-    console.log(colRef)
     document.getElementById('show_remaining_served_orders').textContent=`${show_in_dinner_pending} ${"\u00A0".repeat(8)} ${show_in_dinner_served}`;
 
 
     document.getElementById('menu-items-card-holder').innerHTML='';
+    document.getElementById('unavailable-items-card-holder').innerHTML='';
 
     meal_name = 'Dinner';
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
-    admin_menu();
+ 
+    admin_menu(admin_hall_name);
   
   });
 }
@@ -1142,7 +1234,6 @@ function admin_submitAddItemButtonClicked(admin_hall_name) {
 function admin_order(){
   var userEmail = localStorage.getItem("userEmail");
   var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
-  console.log('from order : '+ localStorage.getItem("userEmail"))
   admin_showDate(admin_hall_name);
   admin_lunchButtonClicked(admin_hall_name);
   admin_dinnerButtonClicked(admin_hall_name);

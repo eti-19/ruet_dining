@@ -21,6 +21,7 @@
       button.click();
     };
     </script>
+
   </head>
   <body>
     <div class="container-fluid m-0 p-0">
@@ -151,11 +152,21 @@
 
         <div class="container-fluid menu-items">
           <div class="row text-center m-0">
-            <h3 class="py-3">Menu Items</h3>
+            <h3 class="py-3">Available Items</h3>
           </div>
           <div
             class="row flex-wrap m-0 justify-content-evenly"
             id="menu-items-card-holder"
+          ></div>
+        </div>
+
+        <div class="container-fluid menu-items">
+          <div class="row text-center m-0">
+            <h3 class="py-3">Unvailable Items</h3>
+          </div>
+          <div
+            class="row flex-wrap m-0 justify-content-evenly"
+            id="unavailable-items-card-holder"
           ></div>
         </div>
 
@@ -226,41 +237,11 @@
 
       <!-- ---------------------------main ends here ---------------------------------- -->
     </div>
-    <script> function editThisItemClicked(item_name, meal_name, item_price, hall_name){
-      if(meal_name=='Lunch'){
-        if(hall_name != sessionStorage.getItem('lunch_hall_name')){
-          sessionStorage.setItem('lunch_hall_name', hall_name);
-          selectedItemForLunch= ['Rice','Daul'];
-          selectedItemForLunchPrice = [25,0];
-        }
-        if(item_name.target.id != 'Rice' && item_name.target.id != 'Daul'){
-          selectedItemForLunch.push(item_name.target.id);
-        selectedItemForLunchPrice.push(Number(item_price));
-        }
-        
-        
-        sessionStorage.setItem('selectedItemForLunch', JSON.stringify(selectedItemForLunch));
-        sessionStorage.setItem('selectedItemForLunchPrice', JSON.stringify(selectedItemForLunchPrice));
-        document.getElementById(item_name.target.id).innerHTML='Added To Cart';
-      }else{
-        if(hall_name != sessionStorage.getItem('dinner_hall_name')){
-          sessionStorage.setItem('dinner_hall_name', hall_name);
-          selectedItemForLunch= ['Rice','Daul'];
-          selectedItemForLunchPrice = [25,0];
-        }
-        if(item_name.target.id != 'Rice' && item_name.target.id != 'Daul'){
-          selectedItemForDinner.push(item_name.target.id);
-        selectedItemForDinnerPrice.push(Number(item_price));
-        }
-        
-        sessionStorage.setItem('selectedItemForDinner', JSON.stringify(selectedItemForDinner));
-        sessionStorage.setItem('selectedItemForDinnerPrice', JSON.stringify(selectedItemForDinnerPrice));
-        
-        document.getElementById(item_name.target.id).innerHTML='Added To Cart';
-        
-        
-      }
-    }</script>
+    <script> 
+    
+      
+    
+    </script>
     <script src="bundle.js"></script>
     <script type="module" src="../js/login.js"></script>
     <script
@@ -268,5 +249,6 @@
       integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
       crossorigin="anonymous"
     ></script>
+    
   </body>
 </html>
