@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400;700&display=swap');
+@import url('variables.css');
+
+*{
+    font-family: 'Alkatra', cursive;
+}
+
+.container-fluid{
+    margin: 0;
+    padding: 0;
+}
+
+
+/* css for heading part */
+.header .nav-bar .navbar .container-fluid .navbar-brand img{
+    height: 100px;
+}
+
+.header .nav-bar .navbar .container-fluid .navbar-brand{
+    padding: 0 2rem 0 1rem;
+}
+
+.header .nav-bar .navbar{
+    padding: 1rem;
+}
+
+.navbar-nav .nav-item .active{
+    color: var(--ruet-theme-color);
+}
+
+.navbar-nav .nav-item .nav-link:hover{
+    color: var(--ruet-theme-color);
+}
+
+.fun{
+    font-size: xx-large;
+}
+
+
+
+
+#video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  .space {
+    height: 20px; /* 10px top/bottom margin, 20px right/left margin */
+  }
+
+  #search_qr_button:hover{
+    background-color: white;
+    border: 1px solid red;
+    color: red
+}
+
+#search_qr_button{
+    opacity: 60%;
+    background-color: red;
+    border: 1px solid black;
+    color: white;
+    height: 35px;
+}
+
+#qrCodeValue{
+    height: 35px;
+    border: 1px solid rgb(67, 55, 55);
+}
+
+#scan_another_qr_button{
+    opacity: 60%;
+    background-color: white;
+    border: 1px solid red;
+    color: red;
+    height: 35px;
+}
+
+#scan_another_qr_button:hover{
+    background-color: red;
+    border: 1px solid black;
+    color: white;
+}

@@ -1010,7 +1010,7 @@ function admin_editItemButtonClicked(item_name, meal_name, hall_name){
   await deleteDoc(oldDocRef);
       item_name = updatedItemName;
     }
-console.log(collectionRef)
+
     if(updatedItemValue !== ""){
       await updateDoc(doc(collectionRef, item_name), { Price: updatedItemValue });
     }
@@ -1302,6 +1302,20 @@ function admin_order(){
 
 
 
+// ============================  Scan QR Page  ================================
+
+function scan_qr_page(){
+  var userEmail = localStorage.getItem("userEmail");
+  var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
+  sessionStorage.setItem("admin_hall_name", admin_hall_name);
+
+  document.getElementById('scan_another_qr_button').addEventListener("click", function(event){
+    location.reload();
+  });
+
+}
+
+
 //===============================  Select Javascript function  =================
 
 if(document.title == 'Log In'){
@@ -1321,4 +1335,7 @@ else if(document.title == 'Log Out'){
 }
 else if(document.title == 'Order'){
   admin_order();
+}
+else if(document.title == 'Scan QR'){
+  scan_qr_page();
 }
