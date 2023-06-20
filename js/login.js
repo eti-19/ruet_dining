@@ -982,11 +982,16 @@ function admin_showMenuItems(item_name, show_item_price_in_menu, image_source, h
 }
 
 function admin_editItemButtonClicked(item_name, meal_name, hall_name){
+  sessionStorage.setItem('item_name', item_name);
+  sessionStorage.setItem('meal_name', meal_name);
+  sessionStorage.setItem('hall_name', hall_name);
   document.getElementById('edit-item-popup-container').style.display = "block";
-  document.getElementById('submit-update-item-popup').addEventListener("click", async function(item_name, meal_name, hall_name) {
+  document.getElementById('submit-update-item-popup').addEventListener("click", async function() {
     var updatedItemName = document.getElementById("itemNameToBeUpdated").value;
     var updatedItemValue = Number(document.getElementById("itemPriceToBeUpdated").value);
-    
+    var item_name = sessionStorage.getItem('item_name');
+    var meal_name = sessionStorage.getItem('meal_name');
+    var hall_name = sessionStorage.getItem('hall_name');
     var collectionRef = collection(db, hall_name + '/Menu/' + meal_name);
     if(updatedItemName !== ""){
       const oldDocRef = doc(collection(db, hall_name + '/Menu/' + meal_name), item_name);
@@ -1003,15 +1008,33 @@ function admin_editItemButtonClicked(item_name, meal_name, hall_name){
   
   // Delete the old document if desired
   await deleteDoc(oldDocRef);
-
+      item_name = updatedItemName;
     }
-
+console.log(collectionRef)
     if(updatedItemValue !== ""){
-      await updateDoc(doc(collectionRef, updatedItemName), { Price: updatedItemValue });
+      await updateDoc(doc(collectionRef, item_name), { Price: updatedItemValue });
     }
     document.getElementById("edit-item-popup-container").style.display = "none";
     
-    document.getElementById('lunch-button').click();
+    location.reload();
+  });
+
+  document.getElementById('delete-update-item-popup').addEventListener("click", async function() {
+    
+    var item_name = sessionStorage.getItem('item_name');
+    var meal_name = sessionStorage.getItem('meal_name');
+    var hall_name = sessionStorage.getItem('hall_name');
+    var collectionRef = collection(db, hall_name + '/Menu/' + meal_name);
+   
+    await deleteDoc(doc(collectionRef, item_name));
+     
+    document.getElementById("edit-item-popup-container").style.display = "none";
+    
+    location.reload();
+  });
+
+  document.getElementById('close-update-item-popup').addEventListener("click", async function() {    
+    document.getElementById("edit-item-popup-container").style.display = "none"; 
   });
 }
 
