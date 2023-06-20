@@ -238,7 +238,7 @@
 
 
   /* Popup container styles */
-#popup-container {
+#edit-item-popup-container {
     /* display: none; */
     position: fixed;
     top: 0;
@@ -267,16 +267,38 @@
     display: none;
 }
 
-#close-add-item-popup{
+#edit-item-popup-container{
+    display: none;
+}
+
+#close-update-item-popup{
     background-color: white;
     border: 1px solid black;
 }
 
-#close-add-item-popup:hover{
+#close-update-item-popup:hover{
     background-color: white;
     border: 1px solid red;
     color: red;
 }
 
+
+#submit-update-item-popup{
+    background-color: rgb(31, 89, 170);
+    opacity: 60%;
+    color: rgb(200, 229, 32);
+    border: none;
+    font-weight: bolder;
+    padding: 1rem 0;
+}
+
+#submit-update-item-popup:hover{
+    background-color: rgb(31, 89, 170);
+    opacity: 60%;
+    color: white;
+    border: none;
+    font-weight: bolder;
+    padding: 1rem 0;
+}
 
 

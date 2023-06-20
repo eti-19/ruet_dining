@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import {
-  getFirestore, collection, getDocs, addDoc , doc, setDoc, updateDoc, DocumentSnapshot
+  getFirestore, collection, getDocs,getDoc, addDoc , doc, setDoc, updateDoc, DocumentSnapshot, deleteDoc
 } from 'firebase/firestore'
 import {
    getStorage, ref, uploadBytes, getDownloadURL
@@ -971,13 +971,48 @@ function admin_showMenuItems(item_name, show_item_price_in_menu, image_source, h
 
   newElement.id = item_name;
 
-  newElement.addEventListener("click", () => editThisItemClicked(item_name, meal_name, hall_name));
+  // newElement.addEventListener("click", () => editThisItemClicked(item_name, meal_name, hall_name));
+  newElement.addEventListener("click", () => admin_editItemButtonClicked(item_name, meal_name, hall_name));
 
   // Get the parent element by its ID name
   var parentElement = document.getElementById('menu-items-card-holder');
 
   // Append the new element to the parent element
   parentElement.appendChild(newElement);
+}
+
+function admin_editItemButtonClicked(item_name, meal_name, hall_name){
+  document.getElementById('edit-item-popup-container').style.display = "block";
+  document.getElementById('submit-update-item-popup').addEventListener("click", async function(item_name, meal_name, hall_name) {
+    var updatedItemName = document.getElementById("itemNameToBeUpdated").value;
+    var updatedItemValue = Number(document.getElementById("itemPriceToBeUpdated").value);
+    
+    var collectionRef = collection(db, hall_name + '/Menu/' + meal_name);
+    if(updatedItemName !== ""){
+      const oldDocRef = doc(collection(db, hall_name + '/Menu/' + meal_name), item_name);
+  
+  // Get the data from the old document
+  const oldDocSnapshot = await getDoc(oldDocRef);
+  const oldDocData = oldDocSnapshot.data();
+  
+  // Create a new document with the new ID
+  const newDocRef = doc(collection(db, hall_name + '/Menu/' + meal_name), updatedItemName);
+  
+  // Set the data from the old document to the new document
+  await setDoc(newDocRef, oldDocData);
+  
+  // Delete the old document if desired
+  await deleteDoc(oldDocRef);
+
+    }
+
+    if(updatedItemValue !== ""){
+      await updateDoc(doc(collectionRef, updatedItemName), { Price: updatedItemValue });
+    }
+    document.getElementById("edit-item-popup-container").style.display = "none";
+    
+    document.getElementById('lunch-button').click();
+  });
 }
 
 async function editThisItemClicked(item_name, meal_name, hall_name) {
@@ -1020,6 +1055,7 @@ function admin_showUnavailableMenuItems(item_name, show_item_price_in_menu, imag
   newElement.id = item_name;
 
   newElement.addEventListener("click", () => makeItemAvailableClicked(item_name, meal_name, hall_name));
+  // newElement.addEventListener("click", () => admin_editItemButtonClicked(item_name, meal_name, hall_name));
 
   // Get the parent element by its ID name
   var parentElement = document.getElementById('unavailable-items-card-holder');
@@ -1034,9 +1070,6 @@ function admin_showUnavailableMenuItems(item_name, show_item_price_in_menu, imag
     updateDoc(doc(collectionRef, item_name), { Available: true });
     document.getElementById('lunch-button').click();
   }
-
-
-
 
 
 function admin_menu(admin_hall_name){
@@ -1230,6 +1263,8 @@ function admin_submitAddItemButtonClicked(admin_hall_name) {
     }
   });
 }
+
+
 
 function admin_order(){
   var userEmail = localStorage.getItem("userEmail");
