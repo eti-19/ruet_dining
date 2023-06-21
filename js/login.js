@@ -44,6 +44,7 @@ const admin_halls=['Bangabandhu Sheikh Mujibur Rahman Hall','Deshratna Sheikh Ha
 
 
 
+
   //=============================  Log In Page Javascript  ===============================
 
 
@@ -744,6 +745,7 @@ function showqr(meal_name) {
   var year = current_day.getFullYear();
 
   var current_formattedDate = month + " " + day + ", " + year;
+  document.getElementById("show-date-in-history-page").innerText = 'Orders for '+current_formattedDate;
 
   var reference = 'user/' + localStorage.getItem("userid") + '/order/' + current_formattedDate + '/' + meal_name;
   var colRef = collection(db, reference);
@@ -794,7 +796,7 @@ function generateQRCode(order_id) {
 function toggle_in_qr() {
   const lunchButton = document.getElementById("lunch-button");
   const dinnerButton = document.getElementById("dinner-button");
-
+  
 
   document.getElementById('lunch-button').addEventListener("click", function() {
     let lunch_button = document.getElementById('lunch-button');

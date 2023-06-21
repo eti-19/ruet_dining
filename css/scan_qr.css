@@ -88,11 +88,11 @@
     background-color: white;
     border: 1px solid red;
     color: red;
-    height: 35px;
+    height: 40px;
 }
 
 #lunch-dinner-toggle-button:hover{
-    background-color: rgb(59, 31, 237);
+    background-color: rgb(237, 31, 38);
     border: 1px solid black;
     color: white;
 }
@@ -112,3 +112,18 @@
   .item-quantity {
     margin-left: auto;
   }
+
+
+ #show-text {
+    opacity: 60%;
+    background-color: rgb(42, 65, 240);
+    border: 1px solid rgb(42, 65, 240);
+    color: white;
+    height: 40px;
+    font-size: larger;
+  }
+  
+
+
+
+

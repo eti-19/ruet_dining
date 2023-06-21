@@ -26,6 +26,23 @@
       button.click();
     };
     </script>
+    <script>
+      function logoutPopup() {
+          document.getElementById('logout-popup-container').style.display = "block"
+      }
+
+      function closeLogoutPopup() {
+          document.getElementById('logout-popup-container').style.display = "none"
+      }
+
+      function logout() {
+                closeLogoutPopup();
+                localStorage.clear();
+                sessionStorage.clear();
+
+                window.location.href = './index.html';
+      }
+  </script>
   </head>
   <body>
     <div class="container-fluid m-0 p-0">
@@ -62,9 +79,7 @@
                           >Order Meal</a
                         >
                       </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">My Profile</a>
-                      </li>
+                      
   
                       <li class="nav-item">
                         <a class="nav-link active" href="./order_history.html">Order History</a>
@@ -73,7 +88,7 @@
                         <a class="nav-link" aria-current="page" href="./cart.html">Cart</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="./log_out.html">Log Out</a>
+                        <a class="nav-link " href="#" onclick="logoutPopup()">Log Out</a>
                       </li>
                     </ul>
                   </div>
@@ -84,15 +99,9 @@
         </header>
 
           <main>
-            <div class="scoreboard">
-              <div class="content">
-                <div class="row">
-                  <div class="col-12 col-md-8 offset-md-2 text-center">
-                    <h1 style="margin-top: 70px; font-size: 2.5rem">
-                      Orders for 5 June 2023
-                    </h1>
-                  </div>
-                </div>
+            <div class="row">
+              <div class="col-12 text-center d-flex align-items-center justify-content-center" id="show-date-in-history-page">
+                Loading...
               </div>
             </div>
       
@@ -153,7 +162,25 @@
                 </div>
               </div>
             </div>
-
+            <!-- log out popup -->
+        <div id="logout-popup-container" class="px-2">
+          <div id="logout-popup-content">
+            <div class="row"><h2>Do You Want to Log Out?</h2></div>
+  
+            <div class="row py-2">
+              <div class="col">
+                <button type="button" class="btn btn-danger w-100" id="close-logout-item-popup" onclick="closeLogoutPopup()">
+                  Cancel
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-danger w-100" id="submit-logout-item-popup" onclick="logout()">
+                  Log Out!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
           </main>
     </div>
 

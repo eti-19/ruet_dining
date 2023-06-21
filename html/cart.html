@@ -16,7 +16,23 @@
         
         
         <link rel="stylesheet" href="../css/cart.css" />
-        
+        <script>
+          function logoutPopup() {
+              document.getElementById('logout-popup-container').style.display = "block"
+          }
+    
+          function closeLogoutPopup() {
+              document.getElementById('logout-popup-container').style.display = "none"
+          }
+    
+          function logout() {
+                    closeLogoutPopup();
+                    localStorage.clear();
+                    sessionStorage.clear();
+    
+                    window.location.href = './index.html';
+          }
+      </script>
       </head>
 <body>
     <div class="container-fluid m-0 p-0">
@@ -53,9 +69,7 @@
                             >Order Meal</a
                           >
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">My Profile</a>
-                        </li>
+                        
     
                         <li class="nav-item">
                           <a class="nav-link" href="./order_history.html">Order History</a>
@@ -64,7 +78,7 @@
                           <a class="nav-link active" aria-current="page" href="#">Cart</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="./log_out.html">Log Out</a>
+                          <a class="nav-link " href="#" onclick="logoutPopup()">Log Out</a>
                         </li>
                       </ul>
                     </div>
@@ -108,7 +122,25 @@
               </div>
             </div>
             <div class="space"></div>
-
+            <!-- log out popup -->
+        <div id="logout-popup-container" class="px-2">
+          <div id="logout-popup-content">
+            <div class="row"><h2>Do You Want to Log Out?</h2></div>
+  
+            <div class="row py-2">
+              <div class="col">
+                <button type="button" class="btn btn-danger w-100" id="close-logout-item-popup" onclick="closeLogoutPopup()">
+                  Cancel
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-danger w-100" id="submit-logout-item-popup" onclick="logout()">
+                  Log Out!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
           </main>
     </div>
 
