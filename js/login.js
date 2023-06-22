@@ -109,6 +109,7 @@ signUpSubmitButton.addEventListener("click", (event) => {
     localStorage.setItem("userid", user.uid);
     localStorage.setItem("userEmail", userEmail);
     if(admin_emails.includes(userEmail)){
+      sessionStorage.setItem("meal_name", 'Lunch');
       window.location.href = './admin_order.html';
     }else{
       window.location.href = './order.html';
@@ -130,6 +131,7 @@ loginButton.addEventListener("click", (event) => {
     localStorage.setItem("userid", user.uid);
     localStorage.setItem("userEmail", userEmail);
     if(admin_emails.includes(userEmail)){
+      sessionStorage.setItem("meal_name", 'Lunch');
       window.location.href = './admin_order.html';
     }else{
       window.location.href = './order.html';
@@ -1305,13 +1307,47 @@ function admin_order(){
 // ============================  Scan QR Page  ================================
 
 function scan_qr_page(){
+  const show_ordered_item_list = document.getElementById('show_ordered_item_list');
   var userEmail = localStorage.getItem("userEmail");
   var admin_hall_name = admin_halls[admin_emails.indexOf(userEmail)];
   sessionStorage.setItem("admin_hall_name", admin_hall_name);
+  var meal_name = sessionStorage.getItem("meal_name");
+  var formattedDate = sessionStorage.getItem('formattedDate');
+  var lunch_dinner_toggle_button = document.getElementById('lunch-dinner-toggle-button');
+  lunch_dinner_toggle_button.innerText = meal_name;
 
+  lunch_dinner_toggle_button.addEventListener("click", function(event){
+    if(meal_name=='Lunch'){
+      sessionStorage.setItem("meal_name", 'Dinner');
+      location.reload();
+    }
+    else{
+      sessionStorage.setItem("meal_name", 'Lunch');
+      location.reload();
+    }
+  });
+  
   document.getElementById('scan_another_qr_button').addEventListener("click", function(event){
     location.reload();
   });
+  
+
+  document.getElementById('search_qr_button').addEventListener("click", async function(event){
+    var qrCodeValueInput = document.getElementById('qrCodeValue');
+   const DocRef = doc(collection(db, admin_hall_name + '/Orders/' + formattedDate+ '/'+ meal_name+'/Pending'), qrCodeValueInput.value);
+  
+  const DocSnapshot = await getDoc(DocRef);
+  const oldDocData = DocSnapshot.data();
+  
+  if(DocSnapshot.exists()){
+
+  }else{
+    document.getElementById('search_qr_button').innerText = 'Invalid Order Id'
+  }
+console.log(DocSnapshot.exists()); // Verify if the document exists
+
+  });
+
 
 }
 
@@ -1337,5 +1373,6 @@ else if(document.title == 'Order'){
   admin_order();
 }
 else if(document.title == 'Scan QR'){
+  
   scan_qr_page();
 }

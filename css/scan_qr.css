@@ -81,3 +81,18 @@
     border: 1px solid black;
     color: white;
 }
+
+
+#lunch-dinner-toggle-button{
+    opacity: 60%;
+    background-color: white;
+    border: 1px solid red;
+    color: red;
+    height: 35px;
+}
+
+#lunch-dinner-toggle-button:hover{
+    background-color: rgb(59, 31, 237);
+    border: 1px solid black;
+    color: white;
+}

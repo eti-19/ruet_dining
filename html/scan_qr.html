@@ -72,9 +72,12 @@
 
     <div class="container  ">
         <div class="row justify-content-center align-items-center">
-            <div class="col-12 text-center">
-              <h1>Search for an order</h1>
+            <div class="col-8 text-center">
+              <h1>Search an order</h1>
             </div>
+            <div class="col-4 text-center">
+                <button type="button" class="btn btn-danger w-100" id="lunch-dinner-toggle-button">Loading...</button>
+              </div>
         </div>
           
         <div class="row justify-content-center align-items-center">
@@ -82,7 +85,7 @@
               <video id="video" autoplay></video>
             </div>
         </div>
-          
+         
         <div class="space"></div>
         <div class="row">
             <div  id="output"></div>
@@ -100,6 +103,12 @@
         </div>
 
         <div class="space"></div>
+        <div class="container output_group">
+            <div class="cart" id="show_ordered_item_list">
+                <!-- Cart items will be dynamically populated here -->
+            </div>
+            <div class="space"></div>
+        </div>
 
         <div class="row"><div class="col-12"><button type="button" class="btn btn-danger w-100" id="scan_another_qr_button">Scan Another QR</button></div></div>
           
