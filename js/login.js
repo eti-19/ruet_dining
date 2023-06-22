@@ -1339,12 +1339,30 @@ function scan_qr_page(){
   const DocSnapshot = await getDoc(DocRef);
   const oldDocData = DocSnapshot.data();
   
-  if(DocSnapshot.exists()){
-
-  }else{
-    document.getElementById('search_qr_button').innerText = 'Invalid Order Id'
+  if (DocSnapshot.exists()) {
+    for (let key in oldDocData) {
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('item');
+  
+      const nameElement = document.createElement('span');
+      nameElement.classList.add('item-name');
+      nameElement.textContent = key;
+  
+      const priceElement = document.createElement('span');
+      priceElement.classList.add('item-quantity');
+      priceElement.textContent = oldDocData[key];
+  
+      itemElement.appendChild(nameElement);
+      itemElement.appendChild(priceElement);
+  
+      document.getElementById('show_ordered_item_list').appendChild(itemElement);
+    }
   }
-console.log(DocSnapshot.exists()); // Verify if the document exists
+  else{
+    document.getElementById('show_ordered_item_list').classList.add("text-center","h1");
+    document.getElementById('show_ordered_item_list').innerText = 'Invalid Order Id'
+  }
+
 
   });
 
