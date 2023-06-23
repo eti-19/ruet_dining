@@ -10,13 +10,13 @@ import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC9DQ-8QfVbSskULTG-nFC8mNVkh-fbY9g",
-  authDomain: "ruet-dyning.firebaseapp.com",
-  projectId: "ruet-dyning",
-  storageBucket: "ruet-dyning.appspot.com",
-  messagingSenderId: "245177251851",
-  appId: "1:245177251851:web:808356e669d9f156e1af0e",
-  measurementId: "G-4MWP8HZT9F"
+    apiKey: "AIzaSyBDO7u2dhOkLYDJDpVCI1MDJuRr_WS4MYU",
+    authDomain: "ruet-dining-management.firebaseapp.com",
+    projectId: "ruet-dining-management",
+    storageBucket: "ruet-dining-management.appspot.com",
+    messagingSenderId: "269174171595",
+    appId: "1:269174171595:web:66e6174cdfb12ddda2384e",
+    measurementId: "G-R852636W3G"
 }
 
 // init firebase
