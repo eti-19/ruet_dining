@@ -303,3 +303,20 @@
 
 
 
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+
+  .item-name {
+    font-weight: bold;
+  }
+
+  .item-quantity {
+    margin-left: auto;
+  }
+
+

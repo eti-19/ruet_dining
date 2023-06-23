@@ -1211,9 +1211,10 @@ function admin_menu(admin_hall_name){
  
  }
 
- function admin_lunchButtonClicked(admin_hall_name){
+  async function admin_lunchButtonClicked(admin_hall_name){
  
   document.getElementById('lunch-button').addEventListener("click", async function() {
+    document.getElementById('show-remaining-order-items').innerHTML=''
     let lunch_button = document.getElementById('lunch-button');
     lunch_button.style.color = 'white';
     lunch_button.style.backgroundColor = 'rgba(63, 99, 183, 0.689)';
@@ -1240,6 +1241,34 @@ function admin_menu(admin_hall_name){
     meal_name = 'Lunch';
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
     admin_menu(admin_hall_name);
+
+
+    
+    var docref_for_remaining_items = doc(collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Lunch/Ordered items'), 'pending')
+    const DocSnapshot = await getDoc(docref_for_remaining_items);
+    const oldDocData = DocSnapshot.data();
+  
+    if (DocSnapshot.exists()) {
+      for (let key in oldDocData) {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item');
+    
+        const nameElement = document.createElement('span');
+        nameElement.classList.add('item-name');
+        nameElement.textContent = key;
+    
+        const priceElement = document.createElement('span');
+        priceElement.classList.add('item-quantity');
+        priceElement.textContent = oldDocData[key];
+    
+        itemElement.appendChild(nameElement);
+        itemElement.appendChild(priceElement);
+        
+        
+        document.getElementById('show-remaining-order-items').appendChild(itemElement);
+      }
+      
+    }
   
   });
 }
@@ -1248,6 +1277,7 @@ function admin_menu(admin_hall_name){
 function admin_dinnerButtonClicked(admin_hall_name){
   
   document.getElementById('dinner-button').addEventListener("click", async function() {
+    document.getElementById('show-remaining-order-items').innerHTML=''
     let dinner_button = document.getElementById('dinner-button');
     dinner_button.style.color = 'white';
     dinner_button.style.backgroundColor = 'rgba(63, 99, 183, 0.689)';
@@ -1277,6 +1307,34 @@ function admin_dinnerButtonClicked(admin_hall_name){
     reference = admin_halls[admin_emails.indexOf(userEmail)]+'/Menu/'+meal_name;
  
     admin_menu(admin_hall_name);
+
+
+    
+    var docref_for_remaining_items = doc(collection(db, admin_hall_name+'/Orders/'+formattedDate+'/Dinner/Ordered items'), 'pending')
+    const DocSnapshot = await getDoc(docref_for_remaining_items);
+    const oldDocData = DocSnapshot.data();
+  
+    if (DocSnapshot.exists()) {
+      for (let key in oldDocData) {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item');
+    
+        const nameElement = document.createElement('span');
+        nameElement.classList.add('item-name');
+        nameElement.textContent = key;
+    
+        const priceElement = document.createElement('span');
+        priceElement.classList.add('item-quantity');
+        priceElement.textContent = oldDocData[key];
+    
+        itemElement.appendChild(nameElement);
+        itemElement.appendChild(priceElement);
+        
+        
+        document.getElementById('show-remaining-order-items').appendChild(itemElement);
+      }
+      
+    }
   
   });
 }
@@ -1460,7 +1518,27 @@ function scan_qr_page(){
   
   // Delete the old document if desired
   await deleteDoc(DocRef);
-  Location.reload();  
+
+
+  var docref_for_remaining_items = doc(collection(db, admin_hall_name+'/Orders/'+formattedDate+'/'+meal_name+'/Ordered items'), 'pending');
+  const remaining_items_DocSnapshot = await getDoc(docref_for_remaining_items);
+  // await updateDoc(docref_for_remaining_items, {
+  //   [item_check]: check_documentSnapshot.data()[item_check] + oldDocData[item_check]
+  // });
+
+  const updatePromisesRemainingItems = Object.keys(oldDocData).map(async (item_check) => {
+
+      await updateDoc(docref_for_remaining_items, {
+        [item_check]: remaining_items_DocSnapshot.data()[item_check] - oldDocData[item_check]
+      });
+    
+  });
+  
+  await Promise.all(updatePromisesRemainingItems);
+  
+
+
+  location.reload();  
   });
 }
 
